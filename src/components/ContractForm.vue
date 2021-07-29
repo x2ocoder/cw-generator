@@ -5,12 +5,13 @@
     <div role="alert" aria-live="polite" aria-atomic="true" class="alert alert-danger">
         <h4 class="alert-heading">Alert</h4>
         <p>
+            Brave is not supported, use Chrome instead.<br/>
             To use this app please install <a href="https://keplr.app/" rel="noopener" target="_blank" class="">Keplr</a>.
             Use any other wallet at your own risk.
         </p>
     </div>
 
-    <form>
+    <form id="contract_form" @submit="checkForm">
         <fieldset>
             <div class="row">
                 <div class="col-lg-4 col-md-6">
@@ -106,19 +107,59 @@
             Initial Supply: {{ initial_supply }}
         </p>
     </div>
-
 </template>
 
-
 <script>
+    import { SigningCosmosClient } from '@cosmjs/launchpad'
+
     export default {
         name: 'ContractForm',
-        data: function () {
+        data() {
             return {
                 token_name: "",
                 token_symbol: "",
                 token_decimals: 18,
                 initial_supply: 21000000,
+            }
+        },
+        mounted() {
+            this.$nextTick(function () {
+                this.connectKeplr()
+            })
+        },
+        methods: {
+            async connectKeplr() {
+                if (!window.getOfflineSigner || !window.keplr) {
+                    console.log('not detected', window.getOfflineSigner, window.keplr)
+                } else {
+                    const chainId = "cosmoshub-4";
+
+                    // Enabling before using the Keplr is recommended.
+                    // This method will ask the user whether or not to allow access if they haven't visited this website.
+                    // Also, it will request user to unlock the wallet if the wallet is locked.
+                    await window.keplr.enable(chainId);
+
+                    const offlineSigner = window.getOfflineSigner(chainId);
+
+                    // You can get the address/public keys by `getAccounts` method.
+                    // It can return the array of address/public key.
+                    // But, currently, Keplr extension manages only one address/public key pair.
+                    // XXX: This line is needed to set the sender address for SigningCosmosClient.
+                    const accounts = await offlineSigner.getAccounts();
+
+                    // Initialize the gaia api with the offline signer that is injected by Keplr extension.
+                    new SigningCosmosClient(
+                        "https://lcd-cosmoshub.keplr.app",
+                        accounts[0].address,
+                        offlineSigner,
+                    );
+
+                    console.log("Address", accounts[0].address)
+                }
+            },
+            checkForm(e) {
+                this.connectKeplr();
+                e.preventDefault();
             }
         }
     }
