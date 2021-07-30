@@ -110,7 +110,7 @@
 </template>
 
 <script>
-    import { SigningCosmosClient } from '@cosmjs/launchpad'
+    import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate"
 
     export default {
         name: 'ContractForm',
@@ -128,37 +128,64 @@
             })
         },
         methods: {
-            async connectKeplr() {
-                if (!window.getOfflineSigner || !window.keplr) {
-                    console.log('not detected', window.getOfflineSigner, window.keplr)
-                } else {
-                    const chainId = "cosmoshub-4";
+            hasKeplr() {
+                console.log('hasKeplr', window.getOfflineSigner && window.keplr);
 
-                    // Enabling before using the Keplr is recommended.
-                    // This method will ask the user whether or not to allow access if they haven't visited this website.
-                    // Also, it will request user to unlock the wallet if the wallet is locked.
-                    await window.keplr.enable(chainId);
-
-                    const offlineSigner = window.getOfflineSigner(chainId);
-
-                    // You can get the address/public keys by `getAccounts` method.
-                    // It can return the array of address/public key.
-                    // But, currently, Keplr extension manages only one address/public key pair.
-                    // XXX: This line is needed to set the sender address for SigningCosmosClient.
-                    const accounts = await offlineSigner.getAccounts();
-
-                    // Initialize the gaia api with the offline signer that is injected by Keplr extension.
-                    new SigningCosmosClient(
-                        "https://lcd-cosmoshub.keplr.app",
-                        accounts[0].address,
-                        offlineSigner,
-                    );
-
-                    console.log("Address", accounts[0].address)
+                return window.getOfflineSigner && window.keplr
+            },
+            async isKeplrConnected() {
+                if (this.keplr_client) {
+                    console.log('isKeplrConnected: true')
+                    return true;
                 }
+
+                await this.connectKeplr();
+
+                if (this.keplr_client) {
+                    console.log('isKeplrConnected: true')
+                    return true;
+                }
+
+                console.log('Impossible de se connecter à Keplr');
+
+                return false;
+            },
+            async connectKeplr() {
+                console.log('try to connect Keplr');
+
+                if (!this.hasKeplr()) {
+                    console.log('not detected', window.getOfflineSigner, window.keplr);
+                    return;
+                }
+
+                const chainId = "lucina";
+                await window.keplr.enable(chainId);
+
+                this.keplr_api_url = "https://rpc.juno.giansalex.dev";
+                this.offlineSigner = window.getOfflineSigner(chainId);
+                this.keplr_address = (await this.offlineSigner.getAccounts())[0].address;
+                this.keplr_client = await SigningCosmWasmClient.connectWithSigner(
+                    this.keplr_api_url,
+                    this.offlineSigner
+                );
+
+                console.log('Keplr connected.');
+            },
+            async sendTransaction() {
+                console.log('sendTransaction');
+
+                if (!await this.isKeplrConnected()) {
+                    return false;
+                }
+
+                const recipient = "juno14vhcdsyf83ngsrrqc92kmw8q9xakqjm0ff2dpn";
+                const contract = "juno1k48x38gdrunurennpemt4ns45cphlvuvujpmcs";
+                const executeMsg = {transfer: {recipient: recipient, amount: "1"}};
+
+                await this.keplr_client.execute(this.keplr_address, contract, executeMsg)
             },
             checkForm(e) {
-                this.connectKeplr();
+                this.sendTransaction();
                 e.preventDefault();
             }
         }
