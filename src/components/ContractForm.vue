@@ -100,12 +100,16 @@
 
     <div class="row mt-3">
         <h3>Recap</h3>
-        <p>
+        <div>
+            <div v-bind:style="[(transaction_hash.length > 0) ? 'block' : 'none']">
+                Check your transaction {{ transaction_hash }} on
+                <a v-bind:href="'https://blueprints.juno.giansalex.dev/#/contracts/'+transaction_hash">Juno Explorer</a>
+            </div><br/>
             Token Name: {{ token_name }}<br/>
             Token Symbol: {{ token_symbol }}<br/>
             Token decimals: {{ token_decimals }}<br/>
             Initial Supply: {{ initial_supply }}
-        </p>
+        </div>
     </div>
 </template>
 
@@ -116,6 +120,7 @@
         name: 'ContractForm',
         data() {
             return {
+                transaction_hash: "",
                 token_name: "",
                 token_symbol: "",
                 token_decimals: 18,
@@ -129,20 +134,16 @@
         },
         methods: {
             hasKeplr() {
-                console.log('hasKeplr', window.getOfflineSigner && window.keplr);
-
                 return window.getOfflineSigner && window.keplr
             },
             async isKeplrConnected() {
                 if (this.keplr_client) {
-                    console.log('isKeplrConnected: true')
                     return true;
                 }
 
                 await this.connectKeplr();
 
                 if (this.keplr_client) {
-                    console.log('isKeplrConnected: true')
                     return true;
                 }
 
@@ -151,10 +152,7 @@
                 return false;
             },
             async connectKeplr() {
-                console.log('try to connect Keplr');
-
                 if (!this.hasKeplr()) {
-                    console.log('not detected', window.getOfflineSigner, window.keplr);
                     return;
                 }
 
@@ -168,25 +166,53 @@
                     this.keplr_api_url,
                     this.offlineSigner
                 );
-
-                console.log('Keplr connected.');
             },
-            async sendTransaction() {
-                console.log('sendTransaction');
+            async sendTransaction(contract, executeMsg) {
+                return await this.keplr_client.execute(this.keplr_address, contract, executeMsg)
+            },
+            async instantiateContract() {
+                const codeId = 34;
+                const executeMsg = {
+                    name: this.token_name,
+                    symbol: this.token_symbol,
+                    decimals: 2,
+                    reserve_denom: "u" + this.token_symbol,
+                    reserve_decimals: (this.token_decimals - 2),
+                    curve_type: {
+                        linear: {
+                            slope: "1",
+                            scale: 1
+                        }
+                    },
+                    initial_balances: [
+                        {
+                            address: this.keplr_address,
+                            amount: this.initial_supply.toString()
+                        }
+                    ],
+                    mint: {
+                        minter: this.keplr_address,
+                        cap: this.initial_supply.toString()
+                    }
+                };
+                const label = "wc-generator";
+
+                return await this.keplr_client.instantiate(this.keplr_address, codeId, executeMsg, label);
+            },
+            async checkForm(e) {
+                e.preventDefault();
 
                 if (!await this.isKeplrConnected()) {
                     return false;
                 }
 
-                const recipient = "juno14vhcdsyf83ngsrrqc92kmw8q9xakqjm0ff2dpn";
-                const contract = "juno1k48x38gdrunurennpemt4ns45cphlvuvujpmcs";
-                const executeMsg = {transfer: {recipient: recipient, amount: "1"}};
+                const contract = await this.instantiateContract();
 
-                await this.keplr_client.execute(this.keplr_address, contract, executeMsg)
-            },
-            checkForm(e) {
-                this.sendTransaction();
-                e.preventDefault();
+                console.log('response:', contract);
+
+                if (contract.contractAddress !== "undefined") {
+                    this.transaction_hash = contract.transactionHash;
+                }
             }
         }
     }
