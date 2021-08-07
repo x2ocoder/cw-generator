@@ -2,21 +2,60 @@
     <div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">Navbar</a>
+                <a class="navbar-brand" href="https://junochain.com/">
+                    <img src="juno_favicon.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+                    Juno Smart Chain
+                </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
-                        </li>
-                    </ul>
+                <div class="d-flex">
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Wallet</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Useful Links
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">EZStaking.io — Staking Provider</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
+
+        <!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+            <!--<div class="container-fluid">-->
+
+                <!--<a class="navbar-brand" href="https://junochain.com/">-->
+                    <!--<img src="juno_favicon.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">-->
+                    <!--Juno Smart Chain-->
+                <!--</a>-->
+
+                <!--<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+                    <!--<span class="navbar-toggler-icon"></span>-->
+                <!--</button>-->
+
+                <!--<div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+                    <!--<ul class="navbar-nav">-->
+                        <!--<li class="nav-item">-->
+                            <!--<a class="nav-link" aria-current="page" href="#">Wallet</a>-->
+                            <!--<a class="nav-link" aria-current="page" href="#">EZ Staking Validator</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</nav>-->
 
         <div class="mb-0 kingyna-gradient text-white">
             <div class="container p-5">
@@ -276,9 +315,8 @@
                                                 <div role="group" class="form-group">
                                                     <label class="d-block">Token Type *</label>
                                                     <div>
-                                                        <select v-model="token_type" class="form-select">
-                                                            <option v-for="option in token_type_options" disabled
-                                                                    :value="option.value" v-bind:key="option.value">
+                                                        <select v-model="token_type" class="form-select" disabled>
+                                                            <option v-for="option in token_type_options" :value="option.value" v-bind:key="option.value">
                                                                 {{ option.text }}
                                                             </option>
                                                         </select>
@@ -293,10 +331,8 @@
                                                 <div role="group" class="form-group">
                                                     <label class="d-block">Network *</label>
                                                     <div>
-                                                        <select v-model="token_network" class="form-select">
-                                                            <option v-for="option in token_network_options"
-                                                                    :value="option.value" v-bind:key="option.value"
-                                                                    v-bind:disabled="is_token_network_disabled_attr">
+                                                        <select v-model="token_network" class="form-select" v-bind:disabled="is_token_network_disabled_attr">
+                                                            <option v-for="option in token_network_options" :value="option.value" v-bind:key="option.value">
                                                                 {{ option.text }}
                                                             </option>
                                                         </select>
@@ -320,14 +356,13 @@
                                                     <div class="form-check">
                                                         <input type="checkbox" class="form-check-input"
                                                                v-model="is_agreement_checked">
-                                                        <small tabindex="-1" class="text-muted">I have read,
-                                                            understood and agreed to CW20 Token Generator's <a
-                                                                    href="#">Terms of Use</a>.
+                                                        <small tabindex="-1">
+                                                            I have read, understood and agreed to CW20 Token Generator's <a href="#">Terms of Use</a>.
                                                         </small>
                                                     </div>
-                                                    <small class="text-danger" v-if="hasError('is_agreement_checked')">
+                                                    <p class="text-danger" v-if="hasError('is_agreement_checked')">
                                                         {{this.errors.is_agreement_checked.join('<br/>')}}
-                                                    </small>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -338,47 +373,51 @@
                                             </div>
                                             <div class="list-group payment-box list-group-flush">
                                                 <div class="list-group-item d-flex justify-content-between">
-                                <span>Commission Fee:
-                                    <svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false" role="img"
-                                         aria-label="info circle" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                         class="bi-info-circle b-icon bi">
-                                        <g>
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
-                                            <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
-                                        </g>
-                                    </svg>
-                                </span>
+                                                    <span>Commission Fee:
+                                                        <svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false" role="img"
+                                                             aria-label="info circle" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                             class="bi-info-circle b-icon bi">
+                                                            <g>
+                                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                                                <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                                                            </g>
+                                                        </svg>
+                                                    </span>
                                                     <span class="badge bg-success">FREE</span>
                                                 </div>
                                                 <div class="list-group-item d-flex justify-content-between">
-                                <span>Gas Fee:
-                                    <svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false" role="img"
-                                         aria-label="info circle" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                         class="bi-info-circle b-icon bi">
-                                        <g>
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
-                                            <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
-                                        </g>
-                                    </svg>
-                                </span>
+                                                    <span>Gas Fee:
+                                                        <svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false" role="img"
+                                                             aria-label="info circle" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                             class="bi-info-circle b-icon bi">
+                                                            <g>
+                                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                                                <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
+                                                            </g>
+                                                        </svg>
+                                                    </span>
                                                     <span class="badge bg-info">Variable</span>
+                                                </div>
+                                                <div class="list-group-item d-flex justify-content-between">
+                                                    <span>Wallet Status:</span>
+                                                    <span class="badge bg-success" v-if="keplr_address && keplr_address.length">
+                                                        Connected with <span class="ellipsis d-inline-flex">{{keplr_address}}</span>
+                                                    </span>
+                                                    <span class="badge bg-warning" v-else>Not connected</span>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <button type="submit" v-bind:disabled="is_submitting"
-                                                class="btn mt-3 py-3 px-5 text-uppercase btn-success btn-lg w-100">
-                        <span v-if="is_submitting" class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </span>
+                                        <button type="submit" v-bind:disabled="is_submitting" class="btn mt-3 py-3 px-5 text-uppercase btn-success btn-lg w-100">
+                                            <span v-if="is_submitting" class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </span>
                                             <span v-else>Confirm</span>
                                         </button>
 
                                         <div class="row mt-3" v-if="transaction_hash.length > 0 && !is_submitting">
                                             <div>
-                                                Check your transaction on <a
-                                                    v-bind:href="'https://blueprints.juno.giansalex.dev/#/contracts/'+contract_address">Juno
-                                                Blueprints</a><br/>
+                                                Check your transaction on <a v-bind:href="'https://blueprints.juno.giansalex.dev/#/contracts/'+contract_address">Juno Blueprints</a><br/>
                                             </div>
                                         </div>
                                     </div>
@@ -417,6 +456,7 @@
                     token_network: [],
                     is_agreement_checked: [],
                 },
+                keplr_address: null,
                 // model
                 token_name: "",
                 token_symbol: "",
@@ -628,5 +668,23 @@
     }
     .small, small {
         font-size: 80%;
+    }
+    a {
+        color: #ff7171;
+    }
+    a:hover {
+        color: #582727;
+    }
+    .bd-footer a:hover {
+        color: #ef7c7c;
+    }
+    a:-webkit-any-link:focus-visible {
+        outline-offset: 0;
+    }
+    .ellipsis {
+        width: 60px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 </style>
