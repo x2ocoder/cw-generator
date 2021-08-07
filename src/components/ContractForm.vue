@@ -5,7 +5,7 @@
             <div class="container-fluid">
                 <a class="navbar-brand" href="https://junochain.com/">
                     <img src="juno_favicon.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
-                    Juno Smart Chain
+                    Juno
                 </a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +32,7 @@
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
                                     <li><a class="dropdown-item" href="https://junochain.com/">Juno</a></li>
                                     <li><a class="dropdown-item" href="http://www.junoscan.com/">JunoScan</a></li>
-                                    <li><a class="dropdown-item" href="https://blueprints.juno.giansalex.dev/">Juno BluePrints</a></li>
+                                    <li><a class="dropdown-item" href="https://blueprints.juno.giansalex.dev/">Juno Blueprints</a></li>
                                     <li><a class="dropdown-item" href="https://www.ezstaking.io/">EZStaking.io — Staking Provider</a></li>
                                 </ul>
                             </li>
@@ -50,7 +50,7 @@
                 <p class="lead">
                     Easily deploy Smart Contract for a Standard, Capped, Mintable, Burnable CW20 Token.
                     <br>
-                    CW20 Generator is the easiest and fastest way to create your own CW20 token on the Juno Smart Chain network. No coding skills are required.
+                    CW20 Generator is the easiest and fastest way to create your own CW20 token on the Juno network. No coding skills are required.
                 </p>
             </div>
         </div>
@@ -458,7 +458,7 @@
                     { text: "cw20-escrow", value: "cw20-escrow" },
                     { text: "cw20-merkle-airdrop", value: "cw20-merkle-airdrop" },
                 ],
-                token_network: "juno",
+                token_network: "juno-testnet",
                 token_network_options: [
                     { text: "Juno", value: "juno"},
                     { text: "Juno - Testnet", value: "juno-testnet"}
