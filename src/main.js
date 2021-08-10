@@ -1,9 +1,8 @@
-import { createApp, h } from 'vue/dist/vue.cjs.prod.js'
+import { createApp, h } from 'vue'
+import Home from './components/Home'
 
-import ContractForm from './components/ContractForm'
 const NotFoundComponent = { template: '<p>Not found</p>'}
-
-const routes = { '/': ContractForm }
+const routes = { '/': Home }
 const SimpleRouter = {
     data: () => ({
         currentRoute: window.location.pathname
