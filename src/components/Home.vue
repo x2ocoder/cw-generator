@@ -36,5 +36,11 @@
                 address: ''
             }
         },
+        mounted() {
+            window.addEventListener("keplr_keystorechange", async () => {
+                this.keplr = await KeplrConnection.selfUpdate();
+                this.address = this.keplr.address;
+            });
+        },
     }
 </script>

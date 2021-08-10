@@ -43,4 +43,12 @@ export default {
 
         return this.isKeplrConnected();
     },
+    resetClient() {
+        this.client = undefined;
+    },
+    async selfUpdate() {
+        this.resetClient();
+        await this.retryKeplrConnection();
+        return this;
+    }
 }
