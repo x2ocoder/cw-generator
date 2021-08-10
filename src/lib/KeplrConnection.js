@@ -1,18 +1,22 @@
+console.debug('KeplrConnection');
+
 import { SigningCosmWasmClient } from "@cosmjs/cosmwasm-stargate"
 
 export default {
     address: null,
-    client: null,
     hasKeplr() {
+        console.debug('KeplrConnection::hasKeplr');
+
         return window.getOfflineSigner && window.keplr
     },
     isKeplrConnected() {
+        console.debug('KeplrConnection::isKeplrConnected');
+
         return this.client !== undefined && this.client !== null;
     },
-    getAddress() {
-        return this.address
-    },
     async connectKeplr() {
+        console.debug('KeplrConnection::connectKeplr');
+
         if (!this.hasKeplr()) {
             return;
         }
@@ -29,6 +33,8 @@ export default {
         );
     },
     async retryKeplrConnection() {
+        console.debug('KeplrConnection::retryKeplrConnection');
+
         if (this.isKeplrConnected()) {
             return true;
         }

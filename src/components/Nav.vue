@@ -42,25 +42,26 @@
 </template>
 
 <script>
-    import KeplrConnection from "../lib/KeplrConnection"
-
     export default {
         name: "Nav",
         emits: ['update:address'],
+        inject: ['keplr'],
         props: {
             address: String
         },
         methods: {
             // only used by template
             async retryKeplrConnection() {
-                const isSuccess = await KeplrConnection.retryKeplrConnection();
+                console.debug('Nav::retryKeplrConnection');
+
+                const isSuccess = await this.keplr.retryKeplrConnection();
 
                 if (isSuccess) {
-                    this.$emit("update:address", KeplrConnection.getAddress());
+                    this.$emit("update:address", this.keplr.address);
                 }
 
                 return isSuccess;
             },
         }
-    }
+    };
 </script>

@@ -341,12 +341,12 @@
 </template>
 
 <script>
-    import KeplrConnection from "../lib/KeplrConnection"
     import KeplrContract from "../lib/KeplrContract"
 
     export default {
         name: 'ContractForm',
         emits: ['update:address'],
+        inject: ['keplr'],
         props: {
             address: String
         },
@@ -472,7 +472,7 @@
 
                 this.is_submitting = true;
 
-                if (!this.checkForm() || !await KeplrConnection.retryKeplrConnection()) {
+                if (!this.checkForm() || !await this.keplr.retryKeplrConnection()) {
                     this.is_submitting = false;
                     return false;
                 }
@@ -480,16 +480,16 @@
                 try {
                     const contractType = this.getContractType();
 
-                    // currently, only cw20-base contract is supported by TokenGen.
+                    // currently, only cw20-base contract is supported by JunoMint.
                     // Stay tuned with @EZStaking!
-                    const contract = await KeplrContract[contractType](KeplrConnection, {
+                    const contract = await KeplrContract[contractType](this.keplr, {
                         token_name: this.token_name,
                         token_symbol: this.token_symbol,
                         token_decimals: this.token_decimals,
                         initial_supply: this.initial_supply,
                     });
 
-                    console.debug('response:', contract);
+                    console.debug('contract', contract);
 
                     if (typeof contract.contractAddress !== "undefined") {
                         this.contract_address = contract.contractAddress;
@@ -503,10 +503,12 @@
             },
             // only used by template
             async retryKeplrConnection() {
-                const isSuccess = await KeplrConnection.retryKeplrConnection();
+                console.debug('ContractForm::retryKeplrConnection');
+
+                const isSuccess = await this.keplr.retryKeplrConnection();
 
                 if (isSuccess) {
-                    this.$emit("update:address", KeplrConnection.getAddress());
+                    this.$emit("update:address", this.keplr.address);
                 }
 
                 return isSuccess;

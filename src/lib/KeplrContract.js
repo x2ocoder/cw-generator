@@ -1,6 +1,10 @@
+console.debug('KeplrContract');
+
 export default {
     label: "Juno Token Generator by @EZStaking",
-    async instantiateCW20BaseContract(keplrConnection, formData) {
+    async instantiateCW20BaseContract(keplr, formData) {
+        console.debug('KeplrContract::instantiateCW20BaseContract');
+
         const codeId = 34;
         const data = {
             name: formData.token_name,
@@ -16,18 +20,18 @@ export default {
             },
             initial_balances: [
                 {
-                    address: keplrConnection.address,
+                    address: keplr.address,
                     amount: formData.initial_supply.toString()
                 }
             ],
             mint: {
-                minter: keplrConnection.address,
+                minter: keplr.address,
                 cap: formData.initial_supply.toString()
             }
         };
 
-        return await keplrConnection.client.instantiate(
-            keplrConnection.address,
+        return await keplr.client.instantiate(
+            keplr.address,
             codeId,
             data,
             this.label

@@ -20,6 +20,7 @@
 </template>
 
 <script>
+    import KeplrConnection from "../lib/KeplrConnection"
     import CustomNav from './Nav'
     import ContractForm from './ContractForm'
 
@@ -29,6 +30,7 @@
             CustomNav,
             ContractForm,
         },
+        provide: { keplr: KeplrConnection },
         data() {
             return {
                 address: ''
