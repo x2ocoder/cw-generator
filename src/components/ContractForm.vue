@@ -464,14 +464,14 @@
 
                 this.is_submitting = true;
 
-                if (!this.checkForm() || !await this.keplr.retryKeplrConnection()) {
-                    this.is_submitting = false;
-                    return false;
-                }
-
-                this.$emit('update:address', this.keplr.address);
-
                 try {
+                    if (!this.checkForm() || !await this.keplr.retryKeplrConnection()) {
+                        this.is_submitting = false;
+                        return false;
+                    }
+
+                    this.$emit('update:address', this.keplr.address);
+
                     const contractType = this.getContractType();
 
                     // currently, only cw20-base contract is supported by JunoMint.
@@ -490,7 +490,7 @@
                         this.transaction_hash = contract.transactionHash;
                     }
                 } catch (e) {
-                    this.errors = {...this.errors, ...KeplrContract.getTransactionErrors(this.keplr, e)};
+                    this.errors = {...this.errors, ...await KeplrContract.getTransactionErrors(this.keplr, e)};
                 }
 
                 this.is_submitting = false;
@@ -498,8 +498,14 @@
             // only used by template
             async retryKeplrConnection() {
                 console.debug('ContractForm::retryKeplrConnection');
+                let isSuccess = false;
 
-                const isSuccess = await this.keplr.retryKeplrConnection();
+                try {
+                    isSuccess = await this.keplr.retryKeplrConnection();
+                } catch (e) {
+                    isSuccess = false;
+                    this.errors = {...this.errors, ...await KeplrContract.getTransactionErrors(this.keplr, e)};
+                }
 
                 if (isSuccess) {
                     this.$emit("update:address", this.keplr.address);

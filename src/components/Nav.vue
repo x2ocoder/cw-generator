@@ -52,9 +52,14 @@
         methods: {
             // only used by template
             async retryKeplrConnection() {
+                let isSuccess = false;
                 console.debug('Nav::retryKeplrConnection');
 
-                const isSuccess = await this.keplr.retryKeplrConnection();
+                try {
+                    isSuccess = await this.keplr.retryKeplrConnection();
+                } catch (e) {
+                    console.error(e.toString());
+                }
 
                 if (isSuccess) {
                     this.$emit("update:address", this.keplr.address);
