@@ -2,6 +2,9 @@ console.debug('KeplrContract');
 
 export default {
     label: "Juno Token Generator by @EZStaking",
+    getTransactionErrors(keplr, error) {
+        return keplr.getTransactionErrors(error);
+    },
     async instantiateCW20BaseContract(keplr, formData) {
         console.debug('KeplrContract::instantiateCW20BaseContract');
 

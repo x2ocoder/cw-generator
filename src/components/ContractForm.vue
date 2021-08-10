@@ -307,13 +307,16 @@
                                                 </span>
                                                 <span class="badge bg-info">Variable</span>
                                             </div>
-                                            <div class="list-group-item d-flex justify-content-between">
-                                                <span>Wallet Status:</span>
+                                            <div class="list-group-item">
+                                                <div class="d-flex justify-content-between">
+                                                    <span>Wallet Status:</span>
 
-                                                <span class="badge bg-success" v-if="address">
-                                                    Connected with <span class="ellipsis d-inline-flex">{{address}}</span>
-                                                </span>
-                                                <span class="badge bg-warning" v-else v-bind:onclick="retryKeplrConnection">Not connected</span>
+                                                    <span class="badge bg-success" v-if="address">Connected with <span class="ellipsis d-inline-flex">{{address}}</span></span>
+                                                    <span class="badge bg-warning" v-else v-bind:onclick="retryKeplrConnection">Not connected</span>
+                                                </div>
+                                                <small class="text-danger" v-if="hasError('account')">
+                                                    {{this.errors.account.join('<br/>')}}
+                                                </small>
                                             </div>
                                         </div>
                                     </div>
@@ -353,6 +356,7 @@
         data() {
             return {
                 errors: {
+                    account: [],
                     token_name: [],
                     token_symbol: [],
                     token_decimals: [],
@@ -426,18 +430,28 @@
                 is_token_network_disabled_attr: true,
             }
         },
+        mounted() {
+            window.addEventListener("keplr_keystorechange", async () => {
+                this.errors.account = []
+            });
+        },
         methods: {
+            // used for the form
             hasError(key) {
                 return this.errors[key].length > 0;
             },
-            checkForm() {
-                let errorLength = 0;
+            resetErrors() {
+                this.errors.account = [];
                 this.errors.token_name = [];
                 this.errors.token_symbol = [];
                 this.errors.token_decimals = [];
                 this.errors.initial_supply = [];
                 this.errors.access_type = [];
                 this.errors.supply_type = [];
+            },
+            checkForm() {
+                let errorLength = 0;
+                this.resetErrors();
 
                 if (!(this.token_name.length >= 3 && this.token_name.length <= 50)) {
                     errorLength++;
@@ -464,9 +478,11 @@
 
                 return errorLength < 1;
             },
+            // used for interacting with chain
             getContractType() {
                 return "instantiateCW20BaseContract";
             },
+            // both
             async submitForm(e) {
                 e.preventDefault();
 
@@ -476,6 +492,8 @@
                     this.is_submitting = false;
                     return false;
                 }
+
+                this.$emit('update:address', this.keplr.address);
 
                 try {
                     const contractType = this.getContractType();
@@ -496,7 +514,7 @@
                         this.transaction_hash = contract.transactionHash;
                     }
                 } catch (e) {
-                    console.error(e);
+                    this.errors = {...this.errors, ...KeplrContract.getTransactionErrors(this.keplr, e)};
                 }
 
                 this.is_submitting = false;
