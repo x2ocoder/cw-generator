@@ -24,11 +24,8 @@
                                             <div role="group" class="form-group">
                                                 <label class="d-block">Token Name</label>
                                                 <div>
-                                                    <input v-model="token_name" class="form-control form-control-lg"
-                                                           min="1" maxlength="30" required placeholder="EZ Coin"/>
-                                                    <small tabindex="-1" class="text-muted">Choose a name
-                                                        for your token.
-                                                    </small>
+                                                    <input v-model="token_name" class="form-control form-control-lg" min="1" maxlength="30" required placeholder="EZ Coin"/>
+                                                    <small tabindex="-1" class="text-muted">Choose a name for your token.</small>
                                                     <small class="text-danger" v-if="hasError('token_name')">
                                                         {{this.errors.token_name.join('<br/>')}}
                                                     </small>
@@ -38,12 +35,8 @@
                                             <div role="group" class="form-group">
                                                 <label class="d-block">Token Symbol</label>
                                                 <div>
-                                                    <input v-model="token_symbol"
-                                                           class="form-control form-control-lg" min="2"
-                                                           maxlength="10" required placeholder="XEZ"/>
-                                                    <small tabindex="-1" class="text-muted">Choose a
-                                                        symbol for your token (usually 3-5 chars).
-                                                    </small>
+                                                    <input v-model="token_symbol" class="form-control form-control-lg" min="2" maxlength="10" required placeholder="XEZ"/>
+                                                    <small tabindex="-1" class="text-muted">Choose a symbol for your token (usually 3-5 chars).</small>
                                                     <small class="text-danger" v-if="hasError('token_symbol')">
                                                         {{this.errors.token_symbol.join('<br/>')}}
                                                     </small>
@@ -53,13 +46,8 @@
                                             <div role="group" class="form-group">
                                                 <label class="d-block">Token decimals</label>
                                                 <div>
-                                                    <input v-model="token_decimals"
-                                                           class="form-control form-control-lg" type="number"
-                                                           min="0" step="1" required/>
-                                                    <small tabindex="-1" class="text-muted">Insert the
-                                                        decimal precision of your token. If you don't know what to
-                                                        insert, use 18.
-                                                    </small>
+                                                    <input v-model="token_decimals" class="form-control form-control-lg" type="number" min="0" step="1" required/>
+                                                    <small tabindex="-1" class="text-muted">Insert the decimal precision of your token. If you don't know what to insert, use 18.</small>
                                                     <small class="text-danger" v-if="hasError('token_decimals')">
                                                         {{this.errors.token_decimals.join('<br/>')}}
                                                     </small>
@@ -69,14 +57,8 @@
                                             <div role="group" class="form-group">
                                                 <label class="d-block">Initial Supply</label>
                                                 <div>
-                                                    <input v-model="initial_supply"
-                                                           class="form-control form-control-lg" type="number"
-                                                           min="0" step="1" required
-                                                           placeholder="Your token initial supply"/>
-                                                    <small tabindex="-1" class="text-muted">Insert the
-                                                        initial number of tokens available. Will be put in your
-                                                        account.
-                                                    </small>
+                                                    <input v-model="initial_supply" class="form-control form-control-lg" type="number" min="0" step="1" required placeholder="Your token initial supply"/>
+                                                    <small tabindex="-1" class="text-muted">Insert the initial number of tokens available. Will be put in your account.</small>
                                                     <small class="text-danger" v-if="hasError('initial_supply')">
                                                         {{this.errors.initial_supply.join('<br/>')}}
                                                     </small>
@@ -86,14 +68,8 @@
                                             <div role="group" class="form-group">
                                                 <label class="d-block">Total Supply</label>
                                                 <div>
-                                                    <input v-model="total_supply"
-                                                           class="form-control form-control-lg" type="number"
-                                                           min="0" step="1" required
-                                                           placeholder="Your token max supply"
-                                                           v-bind:disabled="is_total_supply_disabled_attr"/>
-                                                    <small tabindex="-1" class="text-muted">Insert the
-                                                        maximum number of tokens available.
-                                                    </small>
+                                                    <input v-model="total_supply" class="form-control form-control-lg" type="number" min="0" step="1" required placeholder="Your token max supply" v-bind:disabled="is_total_supply_disabled_attr"/>
+                                                    <small tabindex="-1" class="text-muted">Insert the maximum number of tokens available.</small>
                                                     <small class="text-danger" v-if="hasError('total_supply')">
                                                         {{this.errors.total_supply.join('<br/>')}}
                                                     </small>
