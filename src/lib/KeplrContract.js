@@ -21,7 +21,7 @@ export default {
                 }
             ],
             mint: {
-                minter: formData.address,
+                minter: keplrConnection.address,
                 cap: formData.initial_supply.toString()
             }
         };

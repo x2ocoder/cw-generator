@@ -464,6 +464,9 @@
 
                 return errorLength < 1;
             },
+            getContractType() {
+                return "instantiateCW20BaseContract";
+            },
             async submitForm(e) {
                 e.preventDefault();
 
@@ -475,9 +478,11 @@
                 }
 
                 try {
+                    const contractType = this.getContractType();
+
                     // currently, only cw20-base contract is supported by TokenGen.
                     // Stay tuned with @EZStaking!
-                    const contract = await KeplrContract.instantiateCW20BaseContract(KeplrConnection, {
+                    const contract = await KeplrContract[contractType](KeplrConnection, {
                         token_name: this.token_name,
                         token_symbol: this.token_symbol,
                         token_decimals: this.token_decimals,

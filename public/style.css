@@ -51,3 +51,7 @@ a:-webkit-any-link:focus-visible {
     background-color: #ff7171;
     border-color: #ef7c7c;
 }
+
+.text-primary {
+    color: #ffc107!important;
+}
