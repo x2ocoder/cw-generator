@@ -320,7 +320,9 @@
 </template>
 
 <script>
-  import KeplrContract from "../lib/KeplrContract"
+  import KeplrContract from "../services/KeplrContract"
+  import ContractFormEntity from "../entities/ContractFormEntity"
+  import ContractFormModel from "../models/ContractFormModel"
 
   export default {
     name: 'ContractForm',
@@ -331,79 +333,8 @@
     },
     data() {
       return {
-        errors: {
-          account: [],
-          token_name: [],
-          token_symbol: [],
-          token_decimals: [],
-          initial_supply: [],
-          total_supply: [],
-          access_type: [],
-          supply_type: [],
-          is_verified_source_code: [],
-          is_copyright_off: [],
-          is_token_burnable: [],
-          is_token_mintable: [],
-          is_operable: [],
-          is_token_recoverable: [],
-          token_type: [],
-          token_network: [],
-          is_agreement_checked: [],
-        },
-        // model
-        token_name: "",
-        token_symbol: "",
-        token_decimals: 18,
-        initial_supply: null,
-        total_supply: null,
-        access_type: "Ownable",
-        access_type_options: [
-          { text: "None", value: "None" },
-          { text: "Ownable", value: "Ownable" },
-          { text: "Role Based", value: "Based" },
-        ],
-        supply_type: "Fixed",
-        supply_type_options: [
-          { text: "100k", value: "100k" },
-          { text: "Fixed", value: "Fixed" },
-          { text: "Unlimited", value: "Unlimited" },
-          { text: "Capped", value: "Capped" }
-        ],
-        is_verified_source_code: true,
-        is_copyright_off: false,
-        is_token_burnable: false,
-        is_token_mintable: false,
-        is_operable: false,
-        is_token_recoverable: false,
-        token_type: "cw20-base",
-        token_type_options: [
-          { text: "SimpleCW20", value: "cw20-base" },
-          { text: "cw20-bonding", value: "cw20-bonding" },
-          { text: "cw20-escrow", value: "cw20-escrow" },
-          { text: "cw20-merkle-airdrop", value: "cw20-merkle-airdrop" },
-        ],
-        token_network: "juno-testnet",
-        token_network_options: [
-          { text: "Juno", value: "juno"},
-          { text: "Juno - Testnet", value: "juno-testnet"}
-        ],
-        is_agreement_checked: false,
-        // keplr tx
-        contract_address: "",
-        transaction_hash: "",
-        // form flags
-        is_submitting: false,
-        // form attributes flags
-        is_total_supply_disabled_attr: true,
-        is_supply_type_disabled_attr: true,
-        is_access_type_disabled_attr: true,
-        is_verified_source_code_disabled_attr: true,
-        is_copyright_off_disabled_attr: true,
-        is_token_burnable_disabled_attr: true,
-        is_token_mintable_disabled_attr: true,
-        is_operable_disabled_attr: true,
-        is_token_recoverable_disabled_attr: true,
-        is_token_network_disabled_attr: true,
+        ...ContractFormEntity,
+        ...ContractFormModel,
       }
     },
     mounted() {
@@ -412,7 +343,6 @@
       });
     },
     methods: {
-      // used for the form
       hasError(key) {
         return this.errors[key].length > 0;
       },
@@ -454,11 +384,26 @@
 
         return errorLength < 1;
       },
-      // used for interacting with chain
       getContractType() {
         return "instantiateCW20BaseContract";
       },
-      // both
+      async retryKeplrConnection() {
+        console.debug('ContractForm::retryKeplrConnection');
+        let isSuccess = false;
+
+        try {
+          isSuccess = await this.keplr.retryKeplrConnection();
+        } catch (e) {
+          isSuccess = false;
+          this.errors = {...this.errors, ...await KeplrContract.getTransactionErrors(this.keplr, e)};
+        }
+
+        if (isSuccess) {
+          this.$emit("update:address", this.keplr.address);
+        }
+
+        return isSuccess;
+      },
       async submitForm(e) {
         e.preventDefault();
 
@@ -494,24 +439,6 @@
         }
 
         this.is_submitting = false;
-      },
-      // only used by template
-      async retryKeplrConnection() {
-        console.debug('ContractForm::retryKeplrConnection');
-        let isSuccess = false;
-
-        try {
-          isSuccess = await this.keplr.retryKeplrConnection();
-        } catch (e) {
-          isSuccess = false;
-          this.errors = {...this.errors, ...await KeplrContract.getTransactionErrors(this.keplr, e)};
-        }
-
-        if (isSuccess) {
-          this.$emit("update:address", this.keplr.address);
-        }
-
-        return isSuccess;
       },
     }
   }

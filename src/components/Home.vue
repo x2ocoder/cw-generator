@@ -20,7 +20,7 @@
 </template>
 
 <script>
-  import KeplrConnection from "../lib/KeplrConnection"
+  import KeplrConnection from "../services/KeplrConnection"
   import CustomNav from './Nav'
   import ContractForm from './ContractForm'
 
