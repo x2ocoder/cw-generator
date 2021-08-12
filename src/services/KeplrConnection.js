@@ -93,21 +93,27 @@ export default {
       return;
     }
 
+    console.log('hasKeplr', true);
+
     const chainId = "lucina";
 
     try {
       await window.keplr.enable(chainId);
       hasChain = true;
     } catch (e) {
+      console.log('error', e);
       if ((e.toString() !== "Error: There is no chain info for " + chainId)) {
         throw e;
       }
     }
 
     if (!hasChain) {
+      console.log('!hasChain');
       await this.addChain();
       await window.keplr.enable(chainId);
     }
+
+    console.log('hasChain');
 
     this.keplr_api_url = "https://rpc.juno.giansalex.dev";
     this.offlineSigner = window.getOfflineSigner(chainId);

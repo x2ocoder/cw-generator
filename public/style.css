@@ -41,10 +41,13 @@ a:-webkit-any-link:focus-visible {
 }
 
 .ellipsis {
-    max-width: 60px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.payment-box .ellipsis {
+    max-width: 90px;
 }
 
 .form-check-input:checked {

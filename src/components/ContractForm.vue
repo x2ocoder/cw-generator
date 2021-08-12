@@ -24,7 +24,7 @@
                       <div role="group" class="form-group">
                         <label class="d-block">Token Name</label>
                         <div>
-                          <input v-model="token_name" class="form-control form-control-lg" min="1" maxlength="30" required placeholder="EZ Coin"/>
+                          <input v-model="entity.token_name" class="form-control form-control-lg" min="1" maxlength="30" required placeholder="EZ Coin"/>
                           <small tabindex="-1" class="text-muted">Choose a name for your token.</small>
                           <small class="text-danger" v-if="hasError('token_name')">
                             {{this.errors.token_name.join('<br/>')}}
@@ -35,7 +35,7 @@
                       <div role="group" class="form-group">
                         <label class="d-block">Token Symbol</label>
                         <div>
-                          <input v-model="token_symbol" class="form-control form-control-lg" min="2" maxlength="10" required placeholder="XEZ"/>
+                          <input v-model="entity.token_symbol" class="form-control form-control-lg" min="2" maxlength="10" required placeholder="XEZ"/>
                           <small tabindex="-1" class="text-muted">Choose a symbol for your token (usually 3-5 chars).</small>
                           <small class="text-danger" v-if="hasError('token_symbol')">
                             {{this.errors.token_symbol.join('<br/>')}}
@@ -46,7 +46,7 @@
                       <div role="group" class="form-group">
                         <label class="d-block">Token decimals</label>
                         <div>
-                          <input v-model="token_decimals" class="form-control form-control-lg" type="number" min="0" step="1" required/>
+                          <input v-model="entity.token_decimals" class="form-control form-control-lg" type="number" min="0" step="1" required/>
                           <small tabindex="-1" class="text-muted">Insert the decimal precision of your token. If you don't know what to insert, use 18.</small>
                           <small class="text-danger" v-if="hasError('token_decimals')">
                             {{this.errors.token_decimals.join('<br/>')}}
@@ -57,7 +57,7 @@
                       <div role="group" class="form-group">
                         <label class="d-block">Initial Supply</label>
                         <div>
-                          <input v-model="initial_supply" class="form-control form-control-lg" type="number" min="0" step="1" required placeholder="Your token initial supply"/>
+                          <input v-model="entity.initial_supply" class="form-control form-control-lg" type="number" min="0" step="1" required placeholder="Your token initial supply"/>
                           <small tabindex="-1" class="text-muted">Insert the initial number of tokens available. Will be put in your account.</small>
                           <small class="text-danger" v-if="hasError('initial_supply')">
                             {{this.errors.initial_supply.join('<br/>')}}
@@ -68,7 +68,7 @@
                       <div role="group" class="form-group">
                         <label class="d-block">Total Supply</label>
                         <div>
-                          <input v-model="total_supply" class="form-control form-control-lg" type="number" min="0" step="1" required placeholder="Your token max supply" v-bind:disabled="is_total_supply_disabled_attr"/>
+                          <input v-model="entity.total_supply" class="form-control form-control-lg" type="number" min="0" step="1" required placeholder="Your token max supply" v-bind:disabled="is_total_supply_disabled_attr"/>
                           <small tabindex="-1" class="text-muted">Insert the maximum number of tokens available.</small>
                           <small class="text-danger" v-if="hasError('total_supply')">
                             {{this.errors.total_supply.join('<br/>')}}
@@ -88,7 +88,7 @@
                       <div role="group" class="form-group">
                         <label class="d-block">Supply Type</label>
                         <div>
-                          <select v-model="supply_type" class="form-select" v-bind:disabled="is_supply_type_disabled_attr">
+                          <select v-model="entity.supply_type" class="form-select" v-bind:disabled="is_supply_type_disabled_attr">
                             <option v-for="option in supply_type_options" :value="option.value" v-bind:key="option.value">
                               {{ option.text }}
                             </option>
@@ -103,7 +103,7 @@
                       <div role="group" class="form-group">
                         <label class="d-block">Access Type</label>
                         <div>
-                          <select v-model="access_type" class="form-select" v-bind:disabled="is_access_type_disabled_attr">
+                          <select v-model="entity.access_type" class="form-select" v-bind:disabled="is_access_type_disabled_attr">
                             <option v-for="option in access_type_options" :value="option.value" v-bind:key="option.value">
                               {{ option.text }}
                             </option>
@@ -117,7 +117,7 @@
 
                       <div role="group" class="form-group">
                         <div class="form-check form-switch">
-                          <input type="checkbox" class="form-check-input" v-model="is_verified_source_code" v-bind:disabled="is_verified_source_code_disabled_attr">
+                          <input type="checkbox" class="form-check-input" v-model="entity.is_verified_source_code" v-bind:disabled="is_verified_source_code_disabled_attr">
                           <label class="form-check-label">Verified Source Code</label>
                         </div>
                         <small tabindex="-1" class="text-muted">
@@ -130,7 +130,7 @@
 
                       <div role="group" class="form-group">
                         <div class="form-check form-switch">
-                          <input type="checkbox" class="form-check-input" v-model="is_copyright_off" v-bind:disabled="is_copyright_off_disabled_attr">
+                          <input type="checkbox" class="form-check-input" v-model="entity.is_copyright_off" v-bind:disabled="is_copyright_off_disabled_attr">
                           <label class="form-check-label">Remove Copyright</label>
                         </div>
                         <small tabindex="-1" class="text-muted">
@@ -143,7 +143,7 @@
 
                       <div role="group" class="form-group">
                         <div class="form-check form-switch">
-                          <input type="checkbox" class="form-check-input" v-model="is_token_burnable" v-bind:disabled="is_token_burnable_disabled_attr">
+                          <input type="checkbox" class="form-check-input" v-model="entity.is_token_burnable" v-bind:disabled="is_token_burnable_disabled_attr">
                           <label class="form-check-label">Burnable</label>
                         </div>
                         <small tabindex="-1" class="text-muted">
@@ -156,7 +156,7 @@
 
                       <div role="group" class="form-group">
                         <div class="form-check form-switch">
-                          <input type="checkbox" class="form-check-input" v-model="is_token_mintable" v-bind:disabled="is_token_mintable_disabled_attr">
+                          <input type="checkbox" class="form-check-input" v-model="entity.is_token_mintable" v-bind:disabled="is_token_mintable_disabled_attr">
                           <label class="form-check-label">Mintable</label>
                         </div>
                         <small tabindex="-1" class="text-muted">You will be able
@@ -169,7 +169,7 @@
 
                       <div role="group" class="form-group">
                         <div class="form-check form-switch">
-                          <input type="checkbox" class="form-check-input" v-model="is_operable" v-bind:disabled="is_operable_disabled_attr">
+                          <input type="checkbox" class="form-check-input" v-model="entity.is_operable" v-bind:disabled="is_operable_disabled_attr">
                           <label class="form-check-label">Operable</label>
                         </div>
                         <small tabindex="-1" class="text-muted">
@@ -182,7 +182,7 @@
 
                       <div role="group" class="form-group">
                         <div class="form-check form-switch">
-                          <input type="checkbox" class="form-check-input" v-model="is_token_recoverable" v-bind:disabled="is_token_recoverable_disabled_attr">
+                          <input type="checkbox" class="form-check-input" v-model="entity.is_token_recoverable" v-bind:disabled="is_token_recoverable_disabled_attr">
                           <label class="form-check-label">Token Recover</label>
                         </div>
                         <small tabindex="-1" class="text-muted">Recover any CW20
@@ -205,8 +205,8 @@
                       <div role="group" class="form-group">
                         <label class="d-block">Token Type *</label>
                         <div>
-                          <select v-model="token_type" class="form-select" disabled>
-                            <option v-for="option in token_type_options" :value="option.value" v-bind:key="option.value">
+                          <select v-model="entity.token_type" class="form-select" v-bind:disabled="is_token_type_disabled_attr">
+                            <option v-for="option in token_type_options" :value="option.value" v-bind:key="option.value" :disabled="option.disabled">
                               {{ option.text }}
                             </option>
                           </select>
@@ -221,7 +221,7 @@
                       <div role="group" class="form-group">
                         <label class="d-block">Network *</label>
                         <div>
-                          <select v-model="token_network" class="form-select" v-bind:disabled="is_token_network_disabled_attr">
+                          <select v-model="entity.token_network" class="form-select" v-bind:disabled="is_token_network_disabled_attr">
                             <option v-for="option in token_network_options" :value="option.value" v-bind:key="option.value">
                               {{ option.text }}
                             </option>
@@ -244,7 +244,7 @@
                     <div class="card-body">
                       <div role="group" class="form-group">
                         <div class="form-check">
-                          <input type="checkbox" class="form-check-input" v-model="is_agreement_checked" required>
+                          <input type="checkbox" class="form-check-input" v-model="entity.is_agreement_checked" required>
                           <small tabindex="-1">
                             I have read, understood and agreed to CW20 Token Generator's <a href="#">Terms of Use</a>.
                           </small>
@@ -287,8 +287,8 @@
                         <div class="d-flex justify-content-between">
                           <span>Wallet Status:</span>
 
-                          <span class="badge bg-success" v-if="address">Connected with <span class="ellipsis d-inline-flex">{{address}}</span></span>
-                          <span class="badge bg-warning" v-else v-bind:onclick="retryKeplrConnection">Not connected</span>
+                          <span class="badge bg-success d-grid" v-if="address">Connected with <span class="ellipsis">{{address}}</span></span>
+                          <span class="badge bg-warning d-flex" v-else v-bind:onclick="retryKeplrConnection">Not connected</span>
                         </div>
                         <small class="text-danger" v-if="hasError('account')">
                           {{this.errors.account.join('<br/>')}}
@@ -305,9 +305,7 @@
                   </button>
 
                   <div class="row mt-3" v-if="transaction_hash.length > 0 && !is_submitting">
-                    <div>
-                      Check your transaction on <a v-bind:href="'https://blueprints.juno.giansalex.dev/#/contracts/'+contract_address">Juno Blueprints</a><br/>
-                    </div>
+                    <p>Transaction details <a href="#" @click="$emit('open')">{{transaction_hash.substr(0,20)}}...</a></p>
                   </div>
                 </div>
               </div>
@@ -322,19 +320,26 @@
 <script>
   import KeplrContract from "../services/KeplrContract"
   import ContractFormEntity from "../entities/ContractFormEntity"
+  import ContractFormEntityTypes from "../entities/ContractFormEntityTypes"
   import ContractFormModel from "../models/ContractFormModel"
+  import ContractFormOptions from "../form/ContractFormOptions"
 
   export default {
     name: 'ContractForm',
-    emits: ['update:address'],
+    emits: ['update:address', 'update:sharedEntity', 'update:contract'],
     inject: ['keplr'],
     props: {
-      address: String
+      address: String,
+      sharedEntity: {
+        ...ContractFormEntityTypes
+      },
+      contract: Object,
     },
     data() {
       return {
-        ...ContractFormEntity,
+        entity: { ...ContractFormEntity },
         ...ContractFormModel,
+        ...ContractFormOptions,
       }
     },
     mounted() {
@@ -359,25 +364,25 @@
         let errorLength = 0;
         this.resetErrors();
 
-        if (!(this.token_name.length >= 3 && this.token_name.length <= 50)) {
+        if (!(this.entity.token_name.length >= 3 && this.entity.token_name.length <= 50)) {
           errorLength++;
           this.errors.token_name.push("Token Name length must be between 3 and 50 characters (UTF-8).")
         }
 
         const regex = /[a-zA-Z-]{3,12}/;
-        if (!(this.token_symbol.match(regex))) {
+        if (!(this.entity.token_symbol.match(regex))) {
           errorLength++;
           this.errors.token_symbol.push("Token Symbol length must be between 3 and 10 characters.")
         }
 
         // decimals:
         // reserve_decimals: can be 0
-        // if (!(this.token_decimals >= 2 && this.token_decimals <= 10)) {
+        // if (!(this.entity.token_decimals >= 2 && this.entity.token_decimals <= 10)) {
         //   errorLength++;
         //   this.errors.token_decimals.push("Token decimals must be between 2 and 10.")
         // }
         //
-        // if (!(this.initial_supply >= 1 && this.token_decimals <= 100000000000000)) {
+        // if (!(this.entity.initial_supply >= 1 && this.entity.token_decimals <= 100000000000000)) {
         //   errorLength++;
         //   this.errors.token_decimals.push("Initial Supply must be between 0 and 100000000000000")
         // }
@@ -385,7 +390,19 @@
         return errorLength < 1;
       },
       getContractType() {
-        return "instantiateCW20BaseContract";
+        switch (this.entity.token_type) {
+          default:
+          case "cw20-base":
+            return "instantiateCW20BaseContract";
+          case "cw20-staking":
+            return "instantiateCW20StakingContract";
+          case "cw20-atomic_swap":
+            return "instantiateCW20AtomicSwapContract";
+          case "cw20-bonding":
+            return "instantiateCW20BondingContract";
+          case "cw20-escrow":
+            return "instantiateCW20EscrowContract";
+        }
       },
       async retryKeplrConnection() {
         console.debug('ContractForm::retryKeplrConnection');
@@ -416,23 +433,25 @@
           }
 
           this.$emit('update:address', this.keplr.address);
+          this.$emit('update:sharedEntity', this.entity);
 
-          const contractType = this.getContractType();
-
-          // currently, only cw20-base contract is supported by JunoMint.
-          // Stay tuned with @EZStaking!
-          const contract = await KeplrContract[contractType](this.keplr, {
-            token_name: this.token_name,
-            token_symbol: this.token_symbol,
-            token_decimals: this.token_decimals,
-            initial_supply: this.initial_supply,
+          const contract = await KeplrContract[this.getContractType()](this.keplr, {
+            token_name: this.entity.token_name,
+            token_symbol: this.entity.token_symbol,
+            token_decimals: this.entity.token_decimals,
+            initial_supply: this.entity.initial_supply,
           });
-
           console.debug('contract', contract);
 
           if (typeof contract.contractAddress !== "undefined") {
             this.contract_address = contract.contractAddress;
             this.transaction_hash = contract.transactionHash;
+
+            this.$emit('update:contract', {
+              address: this.contract_address,
+              transaction_hash: this.transaction_hash
+            });
+            this.$emit('open');
           }
         } catch (e) {
           this.errors = {...this.errors, ...await KeplrContract.getTransactionErrors(this.keplr, e)};

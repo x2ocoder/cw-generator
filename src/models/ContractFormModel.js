@@ -29,6 +29,7 @@ export default {
     is_token_mintable_disabled_attr: true,
     is_operable_disabled_attr: true,
     is_token_recoverable_disabled_attr: true,
+    is_token_type_disabled_attr: false,
     is_token_network_disabled_attr: true,
     contract_address: "",
     transaction_hash: "",

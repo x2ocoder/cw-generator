@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="https://junochain.com/">
-        <img src="juno_favicon.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+        <img src="juno/logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
         Juno
       </a>
 
@@ -19,7 +19,7 @@
             <li class="nav-item">
               <a class="nav-link" href="#">
                 Wallet
-                <span class="small" v-if="address">(Connected with <span class="ellipsis d-inline-flex">{{address}}</span>)</span>
+                <span class="small d-inline-flex" v-if="address">(Connected with <span class="ellipsis" style="max-width: 60px;">{{address}}</span>)</span>
                 <span class="small" v-else v-bind:onclick="retryKeplrConnection">(Not connected)</span>
               </a>
             </li>
