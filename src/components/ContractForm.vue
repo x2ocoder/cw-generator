@@ -305,7 +305,7 @@
                   </button>
 
                   <div class="row mt-3" v-if="transaction_hash.length > 0 && !is_submitting">
-                    <p>Transaction details <a href="#" @click="$emit('open')">{{transaction_hash.substr(0,20)}}...</a></p>
+                    <p class="d-inline-flex">Transaction details <span class="btn-link ellipsis" @click="$emit('open')" style="max-width: 200px;margin-left:5px;cursor:pointer;">{{transaction_hash}}</span></p>
                   </div>
                 </div>
               </div>
@@ -326,7 +326,7 @@
 
   export default {
     name: 'ContractForm',
-    emits: ['update:address', 'update:sharedEntity', 'update:contract'],
+    emits: ['open', 'update:address', 'update:sharedEntity', 'update:contract'],
     inject: ['keplr'],
     props: {
       address: String,
@@ -433,7 +433,6 @@
           }
 
           this.$emit('update:address', this.keplr.address);
-          this.$emit('update:sharedEntity', this.entity);
 
           const contract = await KeplrContract[this.getContractType()](this.keplr, {
             token_name: this.entity.token_name,
@@ -441,16 +440,13 @@
             token_decimals: this.entity.token_decimals,
             initial_supply: this.entity.initial_supply,
           });
-          console.debug('contract', contract);
 
           if (typeof contract.contractAddress !== "undefined") {
             this.contract_address = contract.contractAddress;
             this.transaction_hash = contract.transactionHash;
 
-            this.$emit('update:contract', {
-              address: this.contract_address,
-              transaction_hash: this.transaction_hash
-            });
+            this.$emit('update:sharedEntity', this.entity);
+            this.$emit('update:contract', {address: this.contract_address, transaction_hash: this.transaction_hash});
             this.$emit('open');
           }
         } catch (e) {
@@ -459,6 +455,6 @@
 
         this.is_submitting = false;
       },
-    }
+    },
   }
 </script>

@@ -15,9 +15,9 @@ export default {
     token_type_options: [
         { text: "SimpleCW20", value: "cw20-base" },
         { text: "StakingCW20", value: "cw20-staking", disabled: "true" },
-        { text: "AtomicSwapCW20", value: "cw20-atomic_swap", disabled: "true"  },
-        { text: "BondingCW20", value: "cw20-bonding", disabled: "true"  },
-        { text: "EscrowCW20", value: "cw20-escrow", disabled: "true"  },
+        { text: "AtomicSwapCW20", value: "cw20-atomic_swap" },
+        { text: "BondingCW20", value: "cw20-bonding" },
+        { text: "EscrowCW20", value: "cw20-escrow" },
         { text: "Ics20CW20", value: "cw20-ics20", disabled: "true" },
         { text: "MerkleDropCW20", value: "cw20-merkleDrop", disabled: "true" },
     ],

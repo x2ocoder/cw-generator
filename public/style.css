@@ -24,11 +24,11 @@
     font-size: 80%;
 }
 
-a {
+a, .btn-link {
     color: #ff7171;
 }
 
-a:hover {
+a:hover, .btn-link:hover {
     color: #582727;
 }
 
@@ -36,7 +36,7 @@ a:hover {
     color: #ef7c7c;
 }
 
-a:-webkit-any-link:focus-visible {
+a:-webkit-any-link:focus-visible, .btn-link:-webkit-any-link:focus-visible {
     outline-offset: 0;
 }
 
