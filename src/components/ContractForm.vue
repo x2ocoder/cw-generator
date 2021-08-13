@@ -263,7 +263,7 @@
                     <div class="list-group payment-box list-group-flush">
                       <div class="list-group-item d-flex justify-content-between">
                         <span>Commission Fee:
-                          <svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false" role="img" aria-label="info circle" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-info-circle b-icon bi">
+                          <svg data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Commission will be transferred directly to us through the Juno network as part of your payment. Commission will support JunoMint to keep it safe, running and constantly updated." viewBox="0 0 16 16" width="1em" height="1em" focusable="false" role="img" aria-label="info circle" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-info-circle b-icon bi">
                             <g>
                               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
                               <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
@@ -274,7 +274,7 @@
                       </div>
                       <div class="list-group-item d-flex justify-content-between">
                         <span>Gas Fee:
-                          <svg viewBox="0 0 16 16" width="1em" height="1em" focusable="false" role="img" aria-label="info circle" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-info-circle b-icon bi">
+                          <svg data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="It depends on Gas Limit and on current Gas price average. MetaMask will suggest both. Do not decrease Gas Limit to avoid transaction to fail. If you want, you can decrease Gas Price but your transaction could remain pending for minutes/hours. Read how to calculate right value in our FAQ. Failed transaction can't be refunded." viewBox="0 0 16 16" width="1em" height="1em" focusable="false" role="img" aria-label="info circle" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-info-circle b-icon bi">
                             <g>
                               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
                               <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"></path>
@@ -343,6 +343,11 @@
       }
     },
     mounted() {
+      let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+      popoverTriggerList.map(function (popoverTriggerEl) {
+        return new window.bootstrap.Popover(popoverTriggerEl)
+      })
+
       window.addEventListener("keplr_keystorechange", async () => {
         this.errors.account = []
       });
