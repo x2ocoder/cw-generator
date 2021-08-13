@@ -246,7 +246,7 @@
                         <div class="form-check">
                           <input type="checkbox" class="form-check-input" v-model="entity.is_agreement_checked" required>
                           <small tabindex="-1">
-                            I have read, understood and agreed to CW20 Token Generator's <a href="#">Terms of Use</a>.
+                            I have read, understood and agreed to CW20 Token Generator's <a class="btn-link" @click="$emit('openModal', 'is_terms_of_use_modal_enabled')">Terms of Use</a>.
                           </small>
                         </div>
                         <p class="text-danger" v-if="hasError('is_agreement_checked')">
@@ -305,7 +305,7 @@
                   </button>
 
                   <div class="row mt-3" v-if="transaction_hash.length > 0 && !is_submitting">
-                    <p class="d-inline-flex">Transaction details <span class="btn-link ellipsis" @click="$emit('open')" style="max-width: 200px;margin-left:5px;cursor:pointer;">{{transaction_hash}}</span></p>
+                    <p class="d-inline-flex">Transaction details <span class="btn-link ellipsis" @click="$emit('openModal', 'is_transaction_details_modal_enabled')" style="max-width: 200px;margin-left:5px;cursor:pointer;">{{transaction_hash}}</span></p>
                   </div>
                 </div>
               </div>
@@ -318,34 +318,35 @@
 </template>
 
 <script>
-  import KeplrContract from "../services/KeplrContract"
-  import ContractFormEntity from "../entities/ContractFormEntity"
-  import ContractFormEntityTypes from "../entities/ContractFormEntityTypes"
-  import ContractFormModel from "../models/ContractFormModel"
-  import ContractFormOptions from "../form/ContractFormOptions"
+  import KeplrContract from "../services/Keplr/KeplrContract"
+  import ContractEntity from "../entities/ContractEntity"
+  import ContractEntityTypes from "../entities/types/ContractEntityTypes"
+  import ContractModel from "../models/ContractModel"
+  import ContractFormOptions from "../form/options/ContractFormOptions"
 
   export default {
     name: 'ContractForm',
-    emits: ['open', 'update:address', 'update:sharedEntity', 'update:contract'],
+    emits: [
+      'update:address',
+      'update:sharedEntity',
+      'update:contract'
+    ],
     inject: ['keplr'],
     props: {
       address: String,
-      sharedEntity: {
-        ...ContractFormEntityTypes
-      },
+      sharedEntity: {...ContractEntityTypes},
       contract: Object,
     },
     data() {
       return {
-        entity: { ...ContractFormEntity },
-        ...ContractFormModel,
+        entity: { ...ContractEntity },
+        ...ContractModel,
         ...ContractFormOptions,
       }
     },
     mounted() {
-      let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-      popoverTriggerList.map(function (popoverTriggerEl) {
-        return new window.bootstrap.Popover(popoverTriggerEl)
+      [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]')).map(function (popoverTriggerEl) {
+        new window.bootstrap.Popover(popoverTriggerEl)
       })
 
       window.addEventListener("keplr_keystorechange", async () => {
@@ -452,7 +453,7 @@
 
             this.$emit('update:sharedEntity', this.entity);
             this.$emit('update:contract', {address: this.contract_address, transaction_hash: this.transaction_hash});
-            this.$emit('open');
+            this.$emit('openModal', 'is_transaction_details_modal_enabled');
           }
         } catch (e) {
           this.errors = {...this.errors, ...await KeplrContract.getTransactionErrors(this.keplr, e)};

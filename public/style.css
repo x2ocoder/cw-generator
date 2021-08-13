@@ -26,6 +26,7 @@
 
 a, .btn-link {
     color: #ff7171;
+    cursor: pointer;
 }
 
 a:hover, .btn-link:hover {

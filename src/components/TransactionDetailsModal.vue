@@ -1,31 +1,5 @@
 <template>
-  <!-- NAV -->
-  <CustomNav v-model:address="address"/>
-
-  <!-- JUMBOTRON -->
-  <div class="mb-0 juno-gradient text-white">
-    <div class="container p-5">
-      <h1 class="display-5 fw-bold">Create your CW20 Token</h1>
-
-      <p class="lead">
-        Easily deploy Smart Contract for a Standard, Capped, Mintable, Burnable CW20 Token.<br>
-        CW20 Generator is the easiest and fastest way to create your own CW20 token on the Juno network. No coding skills are required.
-      </p>
-    </div>
-  </div>
-
-  <!-- FORM -->
-  <ContractForm
-      v-model:address="address"
-      :sharedEntity="sharedEntity"
-      :contract="contract"
-      @update:sharedEntity="setSharedEntity($event)"
-      @update:contract="setContract($event)"
-      @open="showModal"
-  />
-
-  <!-- MODAL -->
-  <modal v-if="is_modal_enabled" @close="hideModal">
+  <modal @close-modal="$emit('closeModal', id)">
     <template v-slot:header><h4>Transaction details</h4></template>
     <template v-slot:body>
       <!-- Token Type -->
@@ -169,61 +143,18 @@
 </template>
 
 <script>
-  import KeplrConnection from "../services/KeplrConnection"
-  import CustomNav from './Nav'
-  import ContractForm from './ContractForm'
-  import Modal from './Modal'
-  import ContractFormEntity from "../entities/ContractFormEntity"
+import ModalComponent from "./Modal"
+import ContractEntityTypes from "../entities/types/ContractEntityTypes"
 
-  export default {
-    name: "Home",
-    components: {
-      CustomNav,
-      ContractForm,
-      Modal
-    },
-    provide: { keplr: KeplrConnection },
-    data() {
-      return {
-        is_modal_enabled: false,
-        address: '',
-        sharedEntity: ContractFormEntity,
-        contract: {
-          address: '',
-          transaction_hash: '',
-        }
-      }
-    },
-    mounted() {
-      window.addEventListener("keplr_keystorechange", async () => {
-        this.keplr = await KeplrConnection.selfUpdate();
-        this.address = this.keplr.address;
-      });
-    },
-    methods: {
-      setSharedEntity(event) {
-        this.sharedEntity = JSON.parse(JSON.stringify(event));
-      },
-      setContract(event) {
-        this.contract = JSON.parse(JSON.stringify(event));
-      },
-      showModal() {
-        this.is_modal_enabled = true;
-      },
-      hideModal() {
-        this.is_modal_enabled = false;
-      }
-    },
-    watch: {
-      sharedEntity(value) {
-        console.log('sharedEntity', value);
-      },
-      address(value) {
-        console.log('address', value);
-      },
-      contract(value) {
-        console.log('contract', value);
-      }
-    }
-  }
+export default {
+  name: 'TransactionDetailsModal',
+  props: {
+    id: String,
+    sharedEntity: {...ContractEntityTypes},
+    contract: Object
+  },
+  components: {
+    modal: ModalComponent
+  },
+}
 </script>

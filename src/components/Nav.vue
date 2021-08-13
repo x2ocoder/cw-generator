@@ -14,10 +14,10 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link btn-link">
                 Wallet
                 <span class="small d-inline-flex" v-if="address">(Connected with <span class="ellipsis" style="max-width: 60px;">{{address}}</span>)</span>
                 <span class="small" v-else v-bind:onclick="retryKeplrConnection">(Not connected)</span>

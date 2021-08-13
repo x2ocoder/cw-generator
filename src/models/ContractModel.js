@@ -1,4 +1,4 @@
-console.debug('ContractFormModel');
+console.debug('ContractModel');
 
 export default {
     errors: {

@@ -1,3 +1,6 @@
+body.modal-open {
+    overflow: hidden;
+}
 
 .modal-mask {
     position: fixed;
@@ -6,7 +9,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     display: table;
     transition: opacity 0.3s ease;
 }
@@ -18,13 +21,12 @@
 
 .modal-container {
     width: 600px;
+    max-height: 500px;
     margin: 0px auto;
-    padding: 20px 30px;
-    background-color: #fff;
-    border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+    border-radius: 5px;
+    border: 0px none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
     transition: all 0.3s ease;
-    font-family: Helvetica, Arial, sans-serif;
 }
 
 .modal-header h3 {
@@ -33,12 +35,11 @@
 }
 
 .modal-body {
-    margin: 20px 0;
+    overflow: auto;
 }
 
 .modal-default-button {
     display: block;
-    margin-top: 1rem;
 }
 
 /*

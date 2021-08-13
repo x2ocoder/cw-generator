@@ -1,8 +1,14 @@
 import { createApp, h } from 'vue'
-import Home from './components/Home'
+import Home from './components/HomePage'
+import Privacy from './components/PrivacyPage'
+import Terms from './components/TermsPage'
 
 const NotFoundComponent = { template: '<p>Not found</p>'}
-const routes = { '/': Home }
+const routes = {
+  '/': Home,
+  '/terms': Terms,
+  '/privacy': Privacy,
+}
 const SimpleRouter = {
   data: () => ({
     currentRoute: window.location.pathname

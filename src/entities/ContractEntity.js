@@ -1,4 +1,4 @@
-console.debug('ContractFormEntity');
+console.debug('ContractEntity');
 
 export default {
     token_name: "",
