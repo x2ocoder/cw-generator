@@ -1,0 +1,23 @@
+mixin descAndErrors(model, description)
+  small(v-if='hasError("'+model+'")').text-danger {{this.errors['#{model}'].join('<br>')}} #[br]
+  small(tabindex="-1").text-muted #{description}
+mixin formGroupInput(title, inputAttributes, model, description)
+  .form-group(role="group")
+    label.d-block #{title}
+    div
+      input(v-model='this.entity.'+model)&attributes(inputAttributes).form-control.form-control-lg
+      +descAndErrors(model, description)
+mixin formGroupSelect(title, selectAttributes, model, description)
+  .form-group(role="group")
+    label.d-block #{title}
+    div
+      select(v-model='this.entity.'+model v-bind:disabled='this.is_'+model+'_disabled_attr')&attributes(selectAttributes).form-select
+        option(v-for="option in this."+model+"_options" :value="option.value" v-bind:key="option.value")
+          | {{option.text}}
+      +descAndErrors(model, description)
+mixin formGroupToggle(title, inputAttributes, model, description)
+  .form-group(role="group")
+    .form-check.form-switch
+      input(v-model='this.entity.'+model v-bind:disabled='this.' + model + '_disabled_attr' type="checkbox")&attributes(inputAttributes).form-check-input
+      label.form-check-label #{title}
+    +descAndErrors(model, description)

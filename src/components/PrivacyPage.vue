@@ -25,8 +25,6 @@
   </div>
 </template>
 
-
-
 <script>
 import CustomNav from "./Nav"
 
