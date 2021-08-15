@@ -115,7 +115,7 @@ export default {
 
     console.log('hasChain');
 
-    this.keplr_api_url = "https://rpc.juno.giansalex.dev";
+    this.keplr_api_url = "https://rpc.juno.omniflix.co";
     this.offlineSigner = window.getOfflineSigner(chainId);
     this.address = (await this.offlineSigner.getAccounts())[0].address;
     this.client = await SigningCosmWasmClient.connectWithSigner(this.keplr_api_url, this.offlineSigner);
